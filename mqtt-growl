@@ -63,7 +63,7 @@ mqtt.createClient(port, host, function(client) {
         debug('Publish received: %j', packet);
         growl(packet.payload, {
             title: packet.topic
-          , image: './icon.png'
+          , image: __dirname + '/icon.png'
           , name: 'mqtt-growl'
         });
     });
