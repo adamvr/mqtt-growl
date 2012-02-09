@@ -61,8 +61,8 @@ mqtt.createClient(port, host, function(client) {
 
     client.on('publish', function(packet) {
         debug('Publish received: %j', packet);
-        growl(packet.topic, {
-            title: packet.payload
+        growl(packet.payload, {
+            title: packet.topic
           , image: './icon.png'
           , name: 'mqtt-growl'
         });
