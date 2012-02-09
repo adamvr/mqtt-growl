@@ -3,6 +3,7 @@
   "name": "mqtt-growl",
   "description": "A growl based mqtt monitor",
   "version": "0.0.1",
+  "keywords": ["mqtt", "growl"],
   "repository": {
     "type": "git",
     "url": "git://github.com/adamvr/mqtt-growl.git"
