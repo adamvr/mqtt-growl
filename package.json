@@ -11,7 +11,7 @@
   "main": "mqtt-growl",
   "bin": "mqtt-growl",
   "engines": {
-    "node": "~0.6.10"
+    "node": "~0.6.5"
   },
   "dependencies": {
     "growl":">=1.5.0",
