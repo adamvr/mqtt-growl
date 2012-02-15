@@ -2,9 +2,10 @@
 
 var mqtt = require('mqttjs')
   , growl = require('growl')
+  , optimist = require('optimist')
   , util = require('util');
 
-var argv = require('optimist')
+var argv = optimist
     .usage('mqtt-growl: receive growl notifications on mqtt messages\n \
             Usage: node mqtt-growl -p <port> -h <host> -t <topics>')
     .options('h', {
@@ -29,7 +30,7 @@ var topics = argv.t.split ? argv.t.split(',') : false
   , port = argv.p;
 
 if (!topics) {
-    require('optimist').showHelp();
+    optimist.showHelp();
     process.exit(1);
 }
 
@@ -60,9 +61,12 @@ mqtt.createClient(port, host, function(client) {
     });
 
     client.on('publish', function(packet) {
-        debug('Publish received: %j', packet);
-        growl(packet.payload, {
-            title: packet.topic
+        var topic = packet.topic.replace(/"/g, "\\\"")
+          , payload = packet.payload.replace(/"/g, "\\\"");
+
+        debug('Topic: %s, Payload: %s', topic, payload);
+        growl(payload, {
+            title: topic
           , image: __dirname + '/icon.png'
           , name: 'mqtt-growl'
         });
