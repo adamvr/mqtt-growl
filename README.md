@@ -6,17 +6,17 @@ a message arrives
 
 ## dependencies
 
-[mqtt.js](http://github.com/adamvr/MQTT.js)
-[node-growl](http://github.com/visionmedia/node-growl)
-[optimist](http://github.com/substack/optimist)
+* [mqtt.js](http://github.com/adamvr/MQTT.js)
+* [node-growl](http://github.com/visionmedia/node-growl)
+* [optimist](http://github.com/substack/node-optimist)
 
 ## todo
 
 Notifications on growl servers other than localhost
 
-## Known problems
+## known problems
 
 Tends to crash on very busy mqtt brokers (such as test.mosquitto.org).
-This is likely due to node-growl spawning a bunch of processes.
+This is likely due to node-growl spawning too many processes.
 The stop gap solution is the -d parameter, which allows node-growl
-to spawn a process only ever x milliseconds.
+to spawn a process only every x milliseconds.
