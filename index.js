@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var mqtt = require('mqttjs')
+var mqtt = require('mqtt')
   , growl = require('growl')
   , optimist = require('optimist')
   , _ = require('underscore')
@@ -55,40 +55,18 @@ function debug () {
 
 growl = _.throttle(growl, delay);
 
-mqtt.createClient(port, host, function(err, client) {
-  self = this;
-  client.connect({keepalive: 10000});
+var c = mqtt.createClient(port, host);
 
-  client.on('connack', function(packet) {
-    if (packet.returnCode !== 0) return debug('problemas');
+c.on('connect', function() {
+  c.subscribe(topics);
 
-    client.subscribe({
-        subscriptions: topics
-    });
-
-    setInterval(function() {
-        debug('pinging');
-        client.pingreq();
-    }, 10000);
-  });
-
-  client.on('publish', function(packet) {
-    var topic = packet.topic.replace(/"/g, "\\\"")
-      , payload = packet.payload.replace(/"/g, "\\\"");
-
-    growl(payload, {
+  c.on('message', function(topic, message) {
+    topic = topic.replace(/"/g, "\\\"");
+    message = message.replace(/"/g, "\\\"");
+    growl(message, {
         title: topic
       , image: __dirname + '/icon.png'
       , name: 'mqtt-growl'
     });
-
-  });
-
-  client.stream.on('close', function() {
-    debug('stream close');
-  });
-
-  client.on('error', function(err) {
-    debug('Error: %j', err);
   });
 });
