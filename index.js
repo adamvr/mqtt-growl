@@ -55,18 +55,18 @@ function debug () {
 
 growl = _.throttle(growl, delay);
 
-var c = mqtt.createClient(port, host);
+var client = mqtt.createClient(port, host);
 
-c.on('connect', function() {
-  c.subscribe(topics);
-
-  c.on('message', function(topic, message) {
+client
+  .subscribe(topics, function(granted) { debug('suback', granted) })
+  .on('message', function (topic, message) {
+    // Escape quotes
     topic = topic.replace(/"/g, "\\\"");
     message = message.replace(/"/g, "\\\"");
+    // Growl it!
     growl(message, {
         title: topic
       , image: __dirname + '/icon.png'
       , name: 'mqtt-growl'
     });
   });
-});
